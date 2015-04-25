@@ -1,0 +1,189 @@
+#!/usr/bin/perl
+use strict;
+
+my $tmpl = "./templates";
+my $output = "./startup";
+
+my $tabWidth = 4;
+my $index = 0;
+
+if(!(fileExists("$tmpl") && fileExists("$output")))
+{
+	$tmpl = ".$tmpl";
+	$output = ".$output";
+}
+if(fileExists("$tmpl") && fileExists("$output"))
+{
+	foreach my $vendorPrefix (directoriesInDir("$tmpl"))
+	{
+		if(isNotDotOrDotDot("$vendorPrefix") && isDir("$tmpl/$vendorPrefix"))
+		{
+			foreach my $mcu (filesInDir("$tmpl/$vendorPrefix"))
+			{
+				if($mcu =~ s/^(.*).v$/$1/)
+				{
+					generate("$vendorPrefix", "${mcu}.v", "${mcu}_startup.d");
+				}
+			}
+		}
+	}
+}
+else
+{
+	print("### Error: Please run this script from the repository or an immediate subdirectory of the repository.\n");
+}
+
+sub generate(vectorFile, outputFile)
+{
+	my ($vendorPrefix, $vectorFile, $outputFile) = @_;
+	my $header = readFile("$tmpl/header.d");
+	my @vectors = arrayFromFile("$tmpl/$vendorPrefix/$vectorFile");
+	my $footer = readFile("$tmpl/footer.d");
+
+	my $prototypes = "";
+	my $body = "";
+	my $reset_handler = "";
+	my $reset_comment = "";
+
+	$index = 0;
+	$body  = "\@isr_vector VectorFunc[] g_pfnVectors = [\n";
+	$body .= entry("cast(VectorFunc)&_stack,", "Initial Stack Pointer");
+
+	foreach my $line (@vectors)
+	{
+		if(substr("$line", 0, 1) ne "#")
+		{
+			chomp($line);
+			my ($handler, $comment) = getHandlerAndComment("$line");
+			my $alias = "exc";
+
+			if(0 == length("$reset_handler"))
+			{
+				if(length("$handler"))
+				{
+					$reset_handler = "$handler";
+					$reset_comment = "$comment";
+					$alias = "rst";
+				}
+			}
+			else
+			{
+				$alias = "exc";
+			}
+
+			if(length("$handler"))
+			{
+				$prototypes .= "\@$alias extern(C) void $handler();\n";
+			}
+		}
+	}
+
+	foreach my $line (@vectors)
+	{
+		if(substr("$line", 0, 1) ne "#")
+		{
+			chomp($line);
+			my ($handler, $comment) = getHandlerAndComment("$line");
+			if(length("$comment") || length("$handler"))
+			{
+				if("" eq "$handler")
+				{
+					$handler = "cast(VectorFunc)0";
+				}
+				else
+				{
+					$handler = "\&$handler";
+				}
+				$body .= entry("$handler,", "$comment");
+			}
+			else
+			{
+				$body .= "\n";
+			}
+		}
+	}
+
+	$body .= "\t];\n";
+
+	if(!fileExists("$output/$vendorPrefix"))	# if no file or directory exist with this name
+	{
+		mkdir("$output/$vendorPrefix");			# create the directory
+	}
+	if(open(OUTFILE, ">$output/$vendorPrefix/$outputFile"))
+	{
+		print(OUTFILE "$header$prototypes\n$body\n$footer");
+		close(OUTFILE);
+	}
+}
+
+sub getHandlerAndComment(line)
+{
+	my ($line) = @_;
+	my $handler = substr("$line", 0, index("$line", ","));
+	my $comment = substr("$line", 1 + length("$handler"));
+	$comment =~ s/^[\t ]*\/\*[\t ]*(.*)[\t ]*\*\/[\t ]*$/$1/;
+	(trim("$handler"), trim("$comment"));
+}
+
+sub entry(value,comment)
+{
+	my	($value, $comment) = @_;
+	my	$tabs = 20 + 1 - ((1 + length("$value")) / $tabWidth);
+	my	$i;
+
+	$i = $index++;
+	"\t$value" . ("\t" x $tabs) . "/* " . sprintf("%3d \$%04x", $i - 16, $i * 4) . " $comment */\n";
+}
+
+sub directoriesInDir(pathname)
+{
+	my	($pathname) = @_;
+	my	@directories;
+
+	if(opendir(DIR, "$pathname"))
+	{
+		@directories = grep { ! -f } readdir(DIR);
+	}
+	return(@directories);
+}
+
+sub directoryExists(pathname){ -d @_[0]; }
+sub fileExists(pathname){ -e @_[0]; }
+
+sub filesInDir(pathname)
+{
+	my	($pathname) = @_;
+	my	@files;
+
+	if(opendir(DIR, "$pathname"))
+	{
+		@files = grep { -f "$pathname/$_" } readdir(DIR);
+	}
+	return(@files);
+}
+
+sub isDir(pathname){ -d @_[0]; }
+
+sub isNotDotOrDotDot(filename){ @_[0] !~ /^\.\.?$/; }
+
+sub readFile(pathname){ join("", &arrayFromFile); }
+
+sub arrayFromFile(pathname)
+{
+	my	($pathname) = @_;
+	my	@buf = ();
+
+	if(open(INFILE, "< $pathname"))
+	{
+		@buf = <INFILE>;
+		close(INFILE);
+	}
+	return(@buf);
+}
+
+sub trim(string)
+{
+	@_[0] =~ s/^\s+//;
+	@_[0] =~ s/\s+$//;
+	@_[0];
+}

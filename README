@@ -1,0 +1,15 @@
+This repository contains D startup files for ARM Cortex-M microcontrollers.
+
+For more info about the D language, please visit dlang.org
+
+The files in the startup/ directory are ready for use.
+Just copy one of them to your src/ directory.
+
+To create a new startup file, all you have to do, is ...
+1: Go to the templates/ directory
+2: CD into the desired vendor's prefix (creating a new folder if needed)
+3: Create and open a new file ending in .v
+4: List all the exception vectors in the correct order starting from the Reset_Handler
+5: Save the file
+6: Run ../bin/generate
+7: Your new startup file should now appear in the startup/ directory; copy it to your src/ folder
