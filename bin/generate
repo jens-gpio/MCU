@@ -40,6 +40,7 @@ sub generate(vectorFile, outputFile)
 	my @vectors = arrayFromFile("$tmpl/$vendorPrefix/$vectorFile");
 	my $footer = readFile("$tmpl/footer.d");
 
+	my $assignments = "";
 	my $prototypes = "";
 	my $body = "";
 	my $reset_handler = "";
@@ -55,38 +56,45 @@ sub generate(vectorFile, outputFile)
 		{
 			chomp($line);
 			my ($handler, $comment) = getHandlerAndComment("$line");
-			my $alias = "exc";
 
-			if(0 == length("$reset_handler"))
+			my ($variable, $value, $value_comment) = "$line" =~ m/^[\t ]*([A-Za-z_][A-Za-z0-9_]*)[\t ]*\=[\t ]*([x0-9a-fA-F]+)[\t ]*(\/\*.*\*\/$)?/;
+			if("$line" =~ m/^[\t ]*[^=]*=[^;]*[;,]/)		# if assigning a value to a symbol
 			{
-				if(length("$handler"))
-				{
-					$reset_handler = "$handler";
-					$reset_comment = "$comment";
-					$alias = "rst";
-				}
+				$assignments .= lineWithComment("$variable = $value;", "$value_comment");
+				$comment = "$value_comment";
 			}
 			else
 			{
-				$alias = "exc";
+				$variable = "";
+				my $alias = "exc";
+
+				if(0 == length("$reset_handler"))
+				{
+					if(length("$handler"))
+					{
+						$reset_handler = "$handler";
+						$reset_comment = "$comment";
+						$alias = "rst";
+					}
+				}
+				else
+				{
+					$alias = "exc";
+				}
+
+				if(length("$handler"))
+				{
+					$prototypes .= "\@$alias extern(C) void $handler();\n";
+				}
 			}
 
-			if(length("$handler"))
+			if(length("$comment") || length("$handler") || length("$variable"))
 			{
-				$prototypes .= "\@$alias extern(C) void $handler();\n";
-			}
-		}
-	}
-
-	foreach my $line (@vectors)
-	{
-		if(substr("$line", 0, 1) ne "#")
-		{
-			chomp($line);
-			my ($handler, $comment) = getHandlerAndComment("$line");
-			if(length("$comment") || length("$handler"))
-			{
-				if("" eq "$handler")
+				if("" ne "$variable")
+				{
+					$handler = "cast(VectorFunc)$variable";
+				}
+				elsif("" eq "$handler")
 				{
 					$handler = "cast(VectorFunc)0";
 				}
@@ -111,7 +119,11 @@ sub generate(vectorFile, outputFile)
 	}
 	if(open(OUTFILE, ">$output/$vendorPrefix/$outputFile"))
 	{
-		print(OUTFILE "$header$prototypes\n$body\n$footer");
+		if(length("$assignments"))
+		{
+			$assignments .= "\n";
+		}
+		print(OUTFILE "$header$assignments$prototypes\n$body\n$footer");
 		close(OUTFILE);
 	}
 }
@@ -128,11 +140,20 @@ sub getHandlerAndComment(line)
 sub entry(value,comment)
 {
 	my	($value, $comment) = @_;
-	my	$tabs = 20 + 1 - ((1 + length("$value")) / $tabWidth);
-	my	$i;
+	my	$i = $index++;
+	"\t" . lineWithComment("$value", sprintf("%3d \$%04x $comment", $i - 16, $i * 4));
+}
 
-	$i = $index++;
-	"\t$value" . ("\t" x $tabs) . "/* " . sprintf("%3d \$%04x", $i - 16, $i * 4) . " $comment */\n";
+sub lineWithComment(line,comment)
+{
+	my	($line, $comment) = @_;
+	my	$tabs = 20 + 1 - ((1 + length("$line")) / $tabWidth);
+
+	if(length("$comment"))
+	{
+		$line .= ("\t" x $tabs) . "/* $comment */";
+	}
+	"$line\n";
 }
 
 sub directoriesInDir(pathname)
