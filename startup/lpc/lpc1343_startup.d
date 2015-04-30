@@ -185,6 +185,7 @@ alias extern(C) const void *VectorFunc;				// so I'm using a void* instead.
 
 @weak extern(C) void LowLevelInit();
 @weak extern(C) void SystemInit();
+@weak extern(C) void __libc_init_array();
 extern(C) void main();
 
 void copyBlock(const(void) *aSource, void *aDestination, void *aDestinationEnd)
@@ -214,6 +215,7 @@ void zeroBlock(void *aDestination, void *aDestinationEnd)
 {
 	LowLevelInit();
 	SystemInit();
+	__libc_init_array();
 
 	copyBlock(&_siccmram, &_sccmram, &_eccmram);
 	copyBlock(&_sirelocated, &_srelocated, &_erelocated);
