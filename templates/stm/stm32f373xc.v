@@ -88,8 +88,8 @@
 	,								/* Reserved */
 	,								/* Reserved */
 	,								/* Reserved */
-	USB_HP_IRQHandler,				/* USB High Power */
-	USB_LP_IRQHandler,				/* USB Low Power */
+	USB_HP_IRQHandler,				/* USB High Priority */
+	USB_LP_IRQHandler,				/* USB Low Priority */
 	USBWakeUp_IRQHandler,			/* USB Wake Up */
 	,								/* Reserved */
 	TIM19_IRQHandler,				/* TIM19 */

@@ -204,8 +204,8 @@ alias extern(C) const void *VectorFunc;				// so I'm using a void* instead.
 	cast(VectorFunc)0,																/*  71 $015c Reserved */
 	cast(VectorFunc)0,																/*  72 $0160 Reserved */
 	cast(VectorFunc)0,																/*  73 $0164 Reserved */
-	&USB_HP_IRQHandler,																/*  74 $0168 USB High Power */
-	&USB_LP_IRQHandler,																/*  75 $016c USB Low Power */
+	&USB_HP_IRQHandler,																/*  74 $0168 USB High Priority */
+	&USB_LP_IRQHandler,																/*  75 $016c USB Low Priority */
 	&USBWakeUp_IRQHandler,															/*  76 $0170 USB Wake Up */
 	cast(VectorFunc)0,																/*  77 $0174 Reserved */
 	&TIM19_IRQHandler,																/*  78 $0178 TIM19 */

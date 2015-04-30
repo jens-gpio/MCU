@@ -33,8 +33,8 @@
 	DMA1_Channel6_IRQHandler,		/* DMA1 Channel 6 */
 	DMA1_Channel7_IRQHandler,		/* DMA1 Channel 7 */
 	ADC1_2_IRQHandler,				/* ADC1 and ADC2 */
-	USB_HP_CAN_TX_IRQHandler,		/* USB High Power and CAN TX */
-	USB_LP_CAN_RX0_IRQHandler,		/* USB Low Power and CAN RX0 */
+	USB_HP_CAN_TX_IRQHandler,		/* USB High Priority and CAN TX */
+	USB_LP_CAN_RX0_IRQHandler,		/* USB Low Priority and CAN RX0 */
 	CAN_RX1_IRQHandler,				/* CAN RX1 */
 	CAN_SCE_IRQHandler,				/* CAN SCE */
 	EXTI9_5_IRQHandler,				/* External Line[9:5]s */
@@ -88,8 +88,8 @@
 	,								/* Reserved */
 	,								/* Reserved */
 	,								/* Reserved */
-	USB_HP_IRQHandler,				/* USB High Power */
-	USB_LP_IRQHandler,				/* USB Low Power */
+	USB_HP_IRQHandler,				/* USB High Priority */
+	USB_LP_IRQHandler,				/* USB Low Priority */
 	USBWakeUp_RMP_IRQHandler,		/* USB Wake Up and RMP */
 	,								/* Reserved */
 	,								/* Reserved */

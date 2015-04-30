@@ -150,8 +150,8 @@ alias extern(C) const void *VectorFunc;				// so I'm using a void* instead.
 	&DMA1_Channel6_IRQHandler,														/*  16 $0080 DMA1 Channel 6 */
 	&DMA1_Channel7_IRQHandler,														/*  17 $0084 DMA1 Channel 7 */
 	&ADC1_2_IRQHandler,																/*  18 $0088 ADC1 and ADC2 */
-	&USB_HP_CAN_TX_IRQHandler,														/*  19 $008c USB High Power and CAN TX */
-	&USB_LP_CAN_RX0_IRQHandler,														/*  20 $0090 USB Low Power and CAN RX0 */
+	&USB_HP_CAN_TX_IRQHandler,														/*  19 $008c USB High Priority and CAN TX */
+	&USB_LP_CAN_RX0_IRQHandler,														/*  20 $0090 USB Low Priority and CAN RX0 */
 	&CAN_RX1_IRQHandler,															/*  21 $0094 CAN RX1 */
 	&CAN_SCE_IRQHandler,															/*  22 $0098 CAN SCE */
 	&EXTI9_5_IRQHandler,															/*  23 $009c External Line[9:5]s */
@@ -205,8 +205,8 @@ alias extern(C) const void *VectorFunc;				// so I'm using a void* instead.
 	cast(VectorFunc)0,																/*  71 $015c Reserved */
 	cast(VectorFunc)0,																/*  72 $0160 Reserved */
 	cast(VectorFunc)0,																/*  73 $0164 Reserved */
-	&USB_HP_IRQHandler,																/*  74 $0168 USB High Power */
-	&USB_LP_IRQHandler,																/*  75 $016c USB Low Power */
+	&USB_HP_IRQHandler,																/*  74 $0168 USB High Priority */
+	&USB_LP_IRQHandler,																/*  75 $016c USB Low Priority */
 	&USBWakeUp_RMP_IRQHandler,														/*  76 $0170 USB Wake Up and RMP */
 	cast(VectorFunc)0,																/*  77 $0174 Reserved */
 	&TIM19_IRQHandler,																/*  78 $0178 TIM19 */
