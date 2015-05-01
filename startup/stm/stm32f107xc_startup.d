@@ -111,7 +111,7 @@ BootRAM = 0xF1E0F85F;
 @exc extern(C) void CAN2_SCE_IRQHandler();
 @exc extern(C) void OTG_FS_IRQHandler();
 
-@isr_vector VectorFunc[] g_pfnVectors = [
+@isr_vector VectorFunc[121] g_pfnVectors = [
 	cast(VectorFunc)&_stack,														/* -16 $0000 Initial Stack Pointer */
 	&Reset_Handler,																	/* -15 $0004 Reset Vector */
 	&NMI_Handler,																	/* -14 $0008 Non Maskable Interrupt Vector */

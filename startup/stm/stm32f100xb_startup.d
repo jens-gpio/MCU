@@ -91,7 +91,7 @@ BootRAM = 0xF108F85F;
 @exc extern(C) void TIM6_DAC_IRQHandler();
 @exc extern(C) void TIM7_IRQHandler();
 
-@isr_vector VectorFunc[] g_pfnVectors = [
+@isr_vector VectorFunc[116] g_pfnVectors = [
 	cast(VectorFunc)&_stack,														/* -16 $0000 Initial Stack Pointer */
 	&Reset_Handler,																	/* -15 $0004 Reset Vector */
 	&NMI_Handler,																	/* -14 $0008 Non Maskable Interrupt Vector */

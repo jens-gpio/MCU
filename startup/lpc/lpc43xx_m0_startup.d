@@ -71,7 +71,7 @@ alias extern(C) const void *VectorFunc;				// so I'm using a void* instead.
 @exc extern(C) void M0_I2S0_OR_I2S1_OR_QEI_IRQHandler();
 @exc extern(C) void M0_C_CAN0_IRQHandler();
 
-@isr_vector VectorFunc[] g_pfnVectors = [
+@isr_vector VectorFunc[46] g_pfnVectors = [
 	cast(VectorFunc)&_stack,														/* -16 $0000 Initial Stack Pointer */
 	&M0_Reset_Handler,																/* -15 $0004 Reset Vector */
 	&M0_NMI_Handler,																/* -14 $0008 Non Maskable Interrupt Vector */

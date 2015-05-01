@@ -98,7 +98,7 @@ alias extern(C) const void *VectorFunc;				// so I'm using a void* instead.
 @exc extern(C) void USBWakeUp_RMP_IRQHandler();
 @exc extern(C) void FPU_IRQHandler();
 
-@isr_vector VectorFunc[] g_pfnVectors = [
+@isr_vector VectorFunc[98] g_pfnVectors = [
 	cast(VectorFunc)&_stack,														/* -16 $0000 Initial Stack Pointer */
 	&Reset_Handler,																	/* -15 $0004 Reset Vector */
 	&NMI_Handler,																	/* -14 $0008 Non Maskable Interrupt Vector */

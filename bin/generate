@@ -45,11 +45,13 @@ sub generate(vectorFile, outputFile)
 	my $body = "";
 	my $reset_handler = "";
 	my $reset_comment = "";
+	my $entryCount = 0;
+	my $entryList = "";
 
 	$index = 0;
-	$body  = "\@isr_vector VectorFunc[] g_pfnVectors = [\n";
-	$body .= entry("cast(VectorFunc)&_stack,", "Initial Stack Pointer");
 
+	$entryList .= entry("cast(VectorFunc)&_stack,", "Initial Stack Pointer");
+	$entryCount++;
 	foreach my $line (@vectors)
 	{
 		if(substr("$line", 0, 1) ne "#")
@@ -102,15 +104,18 @@ sub generate(vectorFile, outputFile)
 				{
 					$handler = "\&$handler";
 				}
-				$body .= entry("$handler,", "$comment");
+				$entryList .= entry("$handler,", "$comment");
+				$entryCount++;
 			}
 			else
 			{
-				$body .= "\n";
+				$entryList .= "\n";
 			}
 		}
 	}
 
+	$body  = "\@isr_vector VectorFunc[$entryCount] g_pfnVectors = [\n";
+	$body .= "$entryList";
 	$body .= "\t];\n";
 
 	if(!fileExists("$output/$vendorPrefix"))	# if no file or directory exist with this name
