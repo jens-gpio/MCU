@@ -196,11 +196,11 @@ void zeroBlock(void *aDestination, void *aDestinationEnd)
 {
 	LowLevelInit();
 	SystemInit();
-	__libc_init_array();
 
 	copyBlock(&_siccmram, &_sccmram, &_eccmram);
 	copyBlock(&_sirelocated, &_srelocated, &_erelocated);
 	zeroBlock(&_szeroed, &_ezeroed);
+	__libc_init_array();
 	main();
 	while(true)
 	{
