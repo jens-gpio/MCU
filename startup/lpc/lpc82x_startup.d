@@ -128,6 +128,7 @@ alias extern(C) const void *VectorFunc;				// so I'm using a void* instead.
 @weak extern(C) void LowLevelInit();
 @weak extern(C) void SystemInit();
 @weak extern(C) void __libc_init_array();
+@weak extern(C) extern __gshared c_ulong SystemCoreClock;
 extern(C) void main();
 
 void copyBlock(const(void) *aSource, void *aDestination, void *aDestinationEnd)
@@ -155,18 +156,20 @@ void zeroBlock(void *aDestination, void *aDestinationEnd)
 
 @naked extern(C) void defaultResetHandler()											/* we can mark this naked, as it never returns and should never save any registers on the stack */
 {
+	uint32_t	saveFreq;
+
 	LowLevelInit();
 	SystemInit();
 
+	saveFreq = SystemCoreClock;
 	copyBlock(&_siccmram, &_sccmram, &_eccmram);
 	copyBlock(&_sirelocated, &_srelocated, &_erelocated);
 	zeroBlock(&_szeroed, &_ezeroed);
 	__libc_init_array();
+	if(&SystemCoreClock) SystemCoreClock = saveFreq;
+
 	main();
-	while(true)
-	{
-		wfi();
-	}
+	defaultExceptionHandler();
 }
 
 @naked extern(C) void defaultExceptionHandler()
