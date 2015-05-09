@@ -1,0 +1,402 @@
+#!/usr/bin/perl
+use strict;
+
+my $HOME = $ENV{"HOME"};
+my $workdir = `pwd`; chomp($workdir);
+my $templates = "templates";
+my $startup = "startup";
+
+if(!(fileExists("$workdir/$templates") && fileExists("$workdir/$startup")))
+{
+	$workdir = `cd .. 2>/dev/null; pwd`;
+	chomp($workdir);
+	if(!(fileExists("$workdir/$templates") && fileExists("$workdir/$startup")))
+	{
+		$workdir = `cd ../.. 2>/dev/null; pwd`;
+		chomp($workdir);
+	}
+}
+
+my $templates = "$workdir/$templates";
+my $dstroot = "$templates/stm";
+
+my $mcuroot = "$HOME/Downloads/Microcontroller";
+my $stmroot = "$mcuroot/STM";
+my $srcroot = "$stmroot/STM32Cube 20150425";
+
+my $tabWidth = 4;
+my $tabs = 8;
+
+my %auto = ();
+
+my %default = (
+	"Reset_Handler"					=> "Reset Vector",
+	"NMI_Handler"					=> "Non Maskable Interrupt Vector",
+	"HardFault_Handler"				=> "Hard Fault Vector",
+	"MemManage_Handler"				=> "Memory Protection Unit Fault Vector",
+	"BusFault_Handler"				=> "Bus Fault Vector",
+	"UsageFault_Handler"			=> "Usage Fault Vector",
+	"SVC_Handler"					=> "SuperVisor Call Vector",
+	"DebugMon_Handler"				=> "Debug Monitor Vector",
+	"PendSV_Handler"				=> "Pending SuperVisor Vector",
+	"SysTick_Handler"				=> "System Tick Vector",
+
+	"DMA1_Channel0_IRQHandler"		=> "DMA1 Channel 0",
+	"DMA1_Channel1_IRQHandler"		=> "DMA1 Channel 1",
+	"DMA1_Channel2_IRQHandler"		=> "DMA1 Channel 2",
+	"DMA1_Channel3_IRQHandler"		=> "DMA1 Channel 3",
+	"DMA1_Channel4_IRQHandler"		=> "DMA1 Channel 4",
+	"DMA1_Channel5_IRQHandler"		=> "DMA1 Channel 5",
+	"DMA1_Channel6_IRQHandler"		=> "DMA1 Channel 6",
+	"DMA1_Channel7_IRQHandler"		=> "DMA1 Channel 7",
+
+	"DMA2_Channel0_IRQHandler"		=> "DMA2 Channel 0",
+	"DMA2_Channel1_IRQHandler"		=> "DMA2 Channel 1",
+	"DMA2_Channel2_IRQHandler"		=> "DMA2 Channel 2",
+	"DMA2_Channel3_IRQHandler"		=> "DMA2 Channel 3",
+	"DMA2_Channel4_IRQHandler"		=> "DMA2 Channel 4",
+	"DMA2_Channel5_IRQHandler"		=> "DMA2 Channel 5",
+	"DMA2_Channel6_IRQHandler"		=> "DMA2 Channel 6",
+	"DMA2_Channel7_IRQHandler"		=> "DMA2 Channel 7",
+
+	"DMA2_Channel4_5_IRQHandler"	=> "DMA2 Channel 4 and 5",
+
+	"TIM6_DAC_IRQHandler"			=> "TIM6 and DAC",
+	"TIM1_BRK_TIM15_IRQHandler"		=> "TIM1 Break and TIM15",
+	"TIM1_UP_TIM16_IRQHandler"		=> "TIM1 Update and TIM16",
+	"TIM1_TRG_COM_TIM17_IRQHandler"	=> "TIM1 Trigger and Commutation and TIM17",
+	"TIM1_BRK_IRQHandler"			=> "TIM1 Break",
+	"TIM1_UP_IRQHandler"			=> "TIM1 Update",
+	"TIM1_TRG_COM_IRQHandler"		=> "TIM1 Trigger and Commutation",
+	"TIM8_BRK_IRQHandler"			=> "TIM8 Break",
+	"TIM8_UP_IRQHandler"			=> "TIM8 Update",
+	"TIM8_TRG_COM_IRQHandler"		=> "TIM8 Trigger and Commutation",
+	"TIM6_DAC1_IRQHandler"			=> "TIM6 and DAC1",
+	"TIM7_DAC2_IRQHandler"			=> "TIM7 and DAC2",
+	"TIM18_DAC2_IRQHandler"			=> "TIM18 and DAC2",
+	"TIM20_BRK_IRQHandler"			=> "TIM20 Break",
+	"TIM20_UP_IRQHandler"			=> "TIM20 Update",
+	"TIM20_TRG_COM_IRQHandler"		=> "TIM20 Trigger and Commutation",
+	"TIM20_CC_IRQHandler"			=> "TIM20 Capture Compare",
+
+	"EXTI15_10_IRQHandler"			=> "External Interrupt Lines[15:10]",
+	"TAMPER_IRQHandler"				=> "Tamper",
+	"RTC_IRQHandler"				=> "Real Time Clock",
+	"RCC_IRQHandler"				=> "Reset and Clock Configuration",
+	"EXTI0_IRQHandler"				=> "External Interrupt Line 0",
+	"EXTI1_IRQHandler"				=> "External Interrupt Line 1",
+	"EXTI2_IRQHandler"				=> "External Interrupt Line 2",
+	"EXTI3_IRQHandler"				=> "External Interrupt Line 3",
+
+	"FSMC_IRQHandler"				=> "Flexible Static Memory Controller",
+	"FMC_IRQHandler"				=> "Flexible Memory Controller",
+	"LTDC_IRQHandler"				=> "LCD/TFT Display Controller",
+	"CRYP_IRQHandler"				=> "Cryptography Processor",
+	"RNG_IRQHandler"				=> "Random Number Generator",
+	"ETH_IRQHandler"				=> "Ethernet Controller",
+	"USB_HP_IRQHandler"				=> "USB High Priority",
+	"USB_LP_IRQHandler"				=> "USB Low Priority",
+	"USBWakeUp_IRQHandler"			=> "USB Wake Up",
+	"USBWakeUp_RMP_IRQHandler"		=> "USB Wake Up and RMP",
+
+	"USB_HP_CAN1_TX_IRQHandler"		=> "USB High Priority + CAN1 TX",
+	"USB_LP_CAN1_RX0_IRQHandler"	=> "USB Low Priority + CAN1 RX0",
+	"USB_HP_CAN_TX_IRQHandler"		=> "USB High Priority and CAN TX",
+	"USB_LP_CAN_RX0_IRQHandler"		=> "USB Low Priority and CAN RX0",
+
+	"CAN_RX1_IRQHandler"			=> "CAN RX1",
+	"CAN_SCE_IRQHandler"			=> "CAN SCE",
+	"CAN_TX_IRQHandler"				=> "CAN TX",
+	"CAN_RX0_IRQHandler"			=> "CAN RX0",
+
+	"ADC1_2_IRQHandler"				=> "ADC1 and ADC2",
+
+	"TSC_IRQHandler"				=> "Touch Sensing Controller",
+
+	"EXTI2_TSC_IRQHandler"			=> "External Interrupt Line 2 and Touch Sensing Controller",
+	"COMP1_2_IRQHandler"			=> "Comparator1 and Comparator2",
+	"COMP1_2_3_IRQHandler"			=> "Comparator1, Comparator2 and Comparator3",
+	"COMP2_IRQHandler"				=> "Comparator2",
+	"COMP4_6_IRQHandler"			=> "Comparator4 and Comparator6",
+	"COMP4_5_6_IRQHandler"			=> "Comparator4, Comparator5 and Comparator6",
+	"COMP7_IRQHandler"				=> "Comparator7",
+
+
+	"BootRAM"						=> "This is for boot in RAM mode for STM32F10x Connectivity line Devices",
+
+#############################
+# temporary:
+#
+#	"EXTI2_TSC_IRQHandler"					=> "EXTI Line2",
+#	"ETH_IRQHandler"						=> "Ethernet",
+#	"USBWakeUp_IRQHandler"					=> "USB Wakeup through EXTI line",
+#	"RTC_IRQHandler"						=> "RTC",
+#	"RCC_IRQHandler"						=> "RCC",
+#	"EXTI0_IRQHandler"						=> "EXTI Line0",
+#	"EXTI1_IRQHandler"						=> "EXTI Line1",
+#	"EXTI2_IRQHandler"						=> "EXTI Line2",
+#	"EXTI3_IRQHandler"						=> "EXTI Line3",
+#	"EXTI15_10_IRQHandler"					=> "External Line[15:10]s",
+#
+# end of temporary
+############################
+
+	);
+
+
+
+for(my $write = 0; $write < 2; $write++)
+{
+	my $parent = "$srcroot";
+	my @directories = directoriesInDir("$parent");
+	foreach my $directory (@directories)
+	{
+		if(isNotDotOrDotDot("$directory") && isDir("$parent/$directory"))
+		{
+			my $parent = "$parent/$directory/Drivers/CMSIS/Device/ST";
+			my @devices = directoriesInDir("$parent");
+			foreach my $device (@devices)
+			{
+				if(isNotDotOrDotDot("$device") && isDir("$parent/$device"))
+				{
+					my $srcpath = "$parent/$device/Source/Templates/gcc";
+					my $dstpath = "$dstroot";
+					convert("$srcpath", "$dstpath", $write);
+				}
+			}
+		}
+	}
+}
+
+sub convert(srcpath,destpath,write)
+{
+	my	($srcPath, $dstPath, $write) = @_;
+
+
+	my $parent = "$srcPath";
+	my @files = filesInDir("$parent");
+	foreach my $file (@files)
+	{
+		my ($basename, $ext) = "$file" =~ /startup_(.*)\.s$/i;
+		if("$file" =~ /\.s$/i)
+		{
+			my %equates = ();
+			my $output = "";
+			my @lines = arrayFromFile("$parent/$file");
+			my $has_isrVector = 0;
+			my $has_ResetHandler = 0;
+			my $record = 0;
+			foreach my $line (@lines)
+			{
+				chomp($line);
+				my ($label, $value) = "$line" =~ /[\t]*\.equ[\t ]+([a-z_][a-z0-9_]*),[\t ]*(0x[0-9a-f]+|\d+)/i;
+				if(length("$label"))
+				{
+					$equates{"$label"} = "$value";
+				}
+				if("$line" =~ /g_pfnVectors:/)
+				{
+					$has_isrVector = 1;
+				}
+				if($has_isrVector && "$line" =~ /Reset_Handler/)
+				{
+					$has_ResetHandler = 1;
+				}
+				if($has_ResetHandler && !$record)
+				{
+					$record = 1;
+				}
+				if($record && ("$line" =~ /\.weak/ || "$line" =~ /\.thumb_set/))
+				{
+					last;
+				}
+				if($record)
+				{
+
+					my ($exceptionHandler, $comment) = "$line" =~ /^[\t ]*\.word[\t ]+([A-Za-z0-9_]+)(?:[\t ]*\/\*(.*)\*\/)?/;
+					$comment = trim("$comment");
+					$comment =~ s/detect$/detection/;
+					$comment =~ s/Window WatchDog$/Windowed WatchDog/;
+
+					if(length("$exceptionHandler"))
+					{
+						if("$exceptionHandler" eq "0")
+						{
+							$comment = "Reserved";
+							$exceptionHandler = "";
+						}
+
+						my $oldComment = $auto{"$exceptionHandler"};
+						if(length("$comment") && "*" ne "$oldComment")
+						{
+							if(length("$oldComment") && "$comment" ne "$oldComment")
+							{
+								$comment = "*";
+							}
+							$auto{"$exceptionHandler"} = "$comment";
+						}
+						if($write)
+						{
+							if("$comment" eq "")
+							{
+								$comment = $default{"$exceptionHandler"};
+							}
+							if("$comment" eq "")
+							{
+								$comment = $auto{"$exceptionHandler"};
+							}
+							if("$comment" eq "*")
+							{
+								$comment = "";
+							}
+							if("$comment" eq "")
+							{
+								($comment) = "$exceptionHandler" =~ /^([A-Za-z0-9_]+)_IRQHandler$/;
+								$comment =~ s/_/ /g;
+							}
+							my $value = $equates{"$exceptionHandler"};
+							if(length("$value"))
+							{
+								$value = " = $value";
+							}
+							$output .= "\t" . lineWithComment($tabs, "$exceptionHandler$value,", "$comment");
+							if("$exceptionHandler" eq "SysTick_Handler" && $write)
+							{
+								$output .= "\n";
+							}
+						}
+					}
+				}
+			}
+			writeFile("$dstPath/$basename.v", "$output");
+		}
+	}
+}
+
+
+sub lineWithComment(tabs,line,comment)
+{
+	my	($tabs, $line, $comment) = @_;
+
+	$tabs -= (1 + length("$line")) / $tabWidth;
+
+	if(length("$comment"))
+	{
+		$line .= "\t" . ("\t" x $tabs) . "/* $comment */";
+	}
+	"$line\n";
+}
+
+
+sub directoriesInDir(pathname)
+{
+	my	($pathname) = @_;
+	my	@directories;
+
+	if(opendir(DIR, "$pathname"))
+	{
+		@directories = grep { ! -f } readdir(DIR);
+	}
+	return(@directories);
+}
+
+
+sub everythingInDir(pathname)
+{
+	my	($pathname) = @_;
+	my	@everything;
+
+	if(opendir(DIR, "$pathname"))
+	{
+		@everything = readdir(DIR);
+	}
+	return(@everything);
+}
+
+
+sub fileExists(pathname){ -e @_[0]; }
+
+
+sub filesInDir(pathname)
+{
+	my	($pathname) = @_;
+	my	@files;
+
+	if(opendir(DIR, "$pathname"))
+	{
+		@files = grep { -f "$pathname/$_" } readdir(DIR);
+	}
+	return(@files);
+}
+
+
+sub isDir(pathname){ -d @_[0]; }
+
+
+sub isNotDotOrDotDot(filename){ @_[0] !~ /^\.\.?$/; }
+
+
+sub isRegularFile(pathname){ -f @_[0]; }
+
+
+sub readDir(pathname)
+{
+	my	($pathname) = @_;
+	my	@files;
+
+	if(opendir(DIR, "$pathname"))
+	{
+		@files = readdir(DIR);
+		closedir(DIR);
+	}
+	return(@files);
+}
+
+
+sub writeFile(pathname, buffer)
+{
+	my	($pathname, $buffer) = @_;
+
+	open(OUTFILE, "> $pathname") or die "Can't write $pathname: $!";
+	print(OUTFILE "$buffer");
+	close(OUTFILE);
+}
+
+
+sub readFile(pathname){ join("", &arrayFromFile); }
+
+
+sub arrayFromFile(pathname)
+{
+	my	($pathname) = @_;
+	my	@buf = ();
+
+	if(open(INFILE, "< $pathname"))
+	{
+		@buf = <INFILE>;
+		close(INFILE);
+	}
+	return(@buf);
+}
+
+
+sub ltrim(string)
+{
+	@_[0] =~ s/^\s+//;
+	@_[0];
+}
+
+
+sub rtrim(string)
+{
+	@_[0] =~ s/\s+$//;
+	@_[0];
+}
+
+
+sub trim(string)
+{
+	@_[0] =~ s/^\s+//;
+	@_[0] =~ s/\s+$//;
+	@_[0];
+}
