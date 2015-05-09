@@ -5,6 +5,7 @@ my $tmpl = "./templates";
 my $output = "./startup";
 
 my $tabWidth = 4;
+my $tabs = 20;
 my $index = 0;
 
 if(!(fileExists("$tmpl") && fileExists("$output")))
@@ -50,7 +51,7 @@ sub generate(vectorFile, outputFile)
 
 	$index = 0;
 
-	$entryList .= entry("cast(VectorFunc)&_stack,", "Initial Stack Pointer");
+	$entryList .= entry($tabs, "cast(VectorFunc)&_stack,", "Initial Stack Pointer");
 	$entryCount++;
 	foreach my $line (@vectors)
 	{
@@ -62,7 +63,7 @@ sub generate(vectorFile, outputFile)
 			my ($variable, $value, $value_comment) = "$line" =~ m/^[\t ]*([A-Za-z_][A-Za-z0-9_]*)[\t ]*\=[\t ]*([x0-9a-fA-F]+)[\t ]*(\/\*.*\*\/$)?/;
 			if("$line" =~ m/^[\t ]*[^=]*=[^;]*[;,]/)		# if assigning a value to a symbol
 			{
-				$assignments .= lineWithComment("$variable = $value;", "$value_comment");
+				$assignments .= lineWithComment($tabs, "$variable = $value;", "$value_comment");
 				$comment = "$value_comment";
 			}
 			else
@@ -104,7 +105,7 @@ sub generate(vectorFile, outputFile)
 				{
 					$handler = "\&$handler";
 				}
-				$entryList .= entry("$handler,", "$comment");
+				$entryList .= entry($tabs, "$handler,", "$comment");
 				$entryCount++;
 			}
 			else
@@ -142,21 +143,21 @@ sub getHandlerAndComment(line)
 	(trim("$handler"), trim("$comment"));
 }
 
-sub entry(value,comment)
+sub entry(tabs,value,comment)
 {
-	my	($value, $comment) = @_;
+	my	($tabs, $value, $comment) = @_;
 	my	$i = $index++;
-	"\t" . lineWithComment("$value", sprintf("%3d \$%04x $comment", $i - 16, $i * 4));
+	"\t" . lineWithComment($tabs, "$value", sprintf("%3d \$%04x $comment", $i - 16, $i * 4));
 }
 
-sub lineWithComment(line,comment)
+sub lineWithComment(tabs,line,comment)
 {
-	my	($line, $comment) = @_;
-	my	$tabs = 20 + 1 - ((1 + length("$line")) / $tabWidth);
+	my	($tabs, $line, $comment) = @_;
+	$tabs -= (1 + length("$line")) / $tabWidth;
 
 	if(length("$comment"))
 	{
-		$line .= ("\t" x $tabs) . "/* $comment */";
+		$line .= "\t" . ("\t" x $tabs) . "/* $comment */";
 	}
 	"$line\n";
 }
