@@ -19,11 +19,11 @@
 	TAMP_STAMP_IRQHandler,			/* Tamper and TimeStamps through the EXTI line */
 	RTC_WKUP_IRQHandler,			/* RTC Wakeup through the EXTI line */
 	FLASH_IRQHandler,				/* FLASH */
-	RCC_IRQHandler,					/* RCC */
-	EXTI0_IRQHandler,				/* EXTI Line0 */
-	EXTI1_IRQHandler,				/* EXTI Line1 */
-	EXTI2_TSC_IRQHandler,			/* EXTI Line2 */
-	EXTI3_IRQHandler,				/* EXTI Line3 */
+	RCC_IRQHandler,					/* Reset and Clock Configuration */
+	EXTI0_IRQHandler,				/* External Interrupt Line 0 */
+	EXTI1_IRQHandler,				/* External Interrupt Line 1 */
+	EXTI2_TSC_IRQHandler,			/* External Interrupt Line 2 and Touch Sensing Controller */
+	EXTI3_IRQHandler,				/* External Interrupt Line 3 */
 	EXTI4_IRQHandler,				/* EXTI Line4 */
 	DMA1_Channel1_IRQHandler,		/* DMA1 Channel 1 */
 	DMA1_Channel2_IRQHandler,		/* DMA1 Channel 2 */
@@ -54,7 +54,7 @@
 	USART1_IRQHandler,				/* USART1 */
 	USART2_IRQHandler,				/* USART2 */
 	USART3_IRQHandler,				/* USART3 */
-	EXTI15_10_IRQHandler,			/* External Line[15:10]s */
+	EXTI15_10_IRQHandler,			/* External Interrupt Lines[15:10] */
 	RTC_Alarm_IRQHandler,			/* RTC Alarm (A and B) through EXTI Line */
 	USBWakeUp_IRQHandler,			/* USB Wake Up */
 	,								/* Reserved */

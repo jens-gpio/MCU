@@ -96,7 +96,6 @@
 	,								/* Reserved */
 	,								/* Reserved */
 	FPU_IRQHandler,					/* FPU */
-
 	,								/* Reserved */
 	,								/* Reserved */
 	SPI4_IRQHandler,				/* SPI4 */

@@ -204,7 +204,6 @@ alias extern(C) const void *VectorFunc;				// so I'm using a void* instead.
 	cast(VectorFunc)0,																/*  79 $017c Reserved */
 	cast(VectorFunc)0,																/*  80 $0180 Reserved */
 	&FPU_IRQHandler,																/*  81 $0184 FPU */
-
 	cast(VectorFunc)0,																/*  82 $0188 Reserved */
 	cast(VectorFunc)0,																/*  83 $018c Reserved */
 	&SPI4_IRQHandler,																/*  84 $0190 SPI4 */

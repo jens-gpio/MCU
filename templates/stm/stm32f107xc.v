@@ -17,13 +17,13 @@
 	WWDG_IRQHandler,				/* Windowed WatchDog */
 	PVD_IRQHandler,					/* PVD through EXTI Line detection */
 	TAMPER_IRQHandler,				/* Tamper */
-	RTC_IRQHandler,					/* RTC */
+	RTC_IRQHandler,					/* Real Time Clock */
 	FLASH_IRQHandler,				/* FLASH */
-	RCC_IRQHandler,					/* RCC */
-	EXTI0_IRQHandler,				/* EXTI Line0 */
-	EXTI1_IRQHandler,				/* EXTI Line1 */
-	EXTI2_IRQHandler,				/* EXTI Line2 */
-	EXTI3_IRQHandler,				/* EXTI Line3 */
+	RCC_IRQHandler,					/* Reset and Clock Configuration */
+	EXTI0_IRQHandler,				/* External Interrupt Line 0 */
+	EXTI1_IRQHandler,				/* External Interrupt Line 1 */
+	EXTI2_IRQHandler,				/* External Interrupt Line 2 */
+	EXTI3_IRQHandler,				/* External Interrupt Line 3 */
 	EXTI4_IRQHandler,				/* EXTI Line4 */
 	DMA1_Channel1_IRQHandler,		/* DMA1 Channel 1 */
 	DMA1_Channel2_IRQHandler,		/* DMA1 Channel 2 */
@@ -54,7 +54,7 @@
 	USART1_IRQHandler,				/* USART1 */
 	USART2_IRQHandler,				/* USART2 */
 	USART3_IRQHandler,				/* USART3 */
-	EXTI15_10_IRQHandler,			/* External Line[15:10]s */
+	EXTI15_10_IRQHandler,			/* External Interrupt Lines[15:10] */
 	RTC_Alarm_IRQHandler,			/* RTC Alarm (A and B) through EXTI Line */
 	OTG_FS_WKUP_IRQHandler,			/* USB OTG FS Wakeup through EXTI line */
 	,								/* Reserved */
@@ -75,7 +75,7 @@
 	DMA2_Channel3_IRQHandler,		/* DMA2 Channel 3 */
 	DMA2_Channel4_IRQHandler,		/* DMA2 Channel 4 */
 	DMA2_Channel5_IRQHandler,		/* DMA2 Channel 5 */
-	ETH_IRQHandler,					/* Ethernet */
+	ETH_IRQHandler,					/* Ethernet Controller */
 	ETH_WKUP_IRQHandler,			/* Ethernet Wakeup through EXTI line */
 	CAN2_TX_IRQHandler,				/* CAN2 TX */
 	CAN2_RX0_IRQHandler,			/* CAN2 RX0 */

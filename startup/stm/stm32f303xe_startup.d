@@ -90,18 +90,26 @@ alias extern(C) const void *VectorFunc;				// so I'm using a void* instead.
 @exc extern(C) void EXTI15_10_IRQHandler();
 @exc extern(C) void RTC_Alarm_IRQHandler();
 @exc extern(C) void USBWakeUp_IRQHandler();
+@exc extern(C) void TIM8_BRK_IRQHandler();
+@exc extern(C) void TIM8_UP_IRQHandler();
+@exc extern(C) void TIM8_TRG_COM_IRQHandler();
+@exc extern(C) void TIM8_CC_IRQHandler();
+@exc extern(C) void ADC3_IRQHandler();
 @exc extern(C) void FMC_IRQHandler();
 @exc extern(C) void SPI3_IRQHandler();
 @exc extern(C) void UART4_IRQHandler();
 @exc extern(C) void UART5_IRQHandler();
 @exc extern(C) void TIM6_DAC_IRQHandler();
+@exc extern(C) void TIM7_IRQHandler();
 @exc extern(C) void DMA2_Channel1_IRQHandler();
 @exc extern(C) void DMA2_Channel2_IRQHandler();
 @exc extern(C) void DMA2_Channel3_IRQHandler();
 @exc extern(C) void DMA2_Channel4_IRQHandler();
 @exc extern(C) void DMA2_Channel5_IRQHandler();
-@exc extern(C) void COMP1_2_IRQHandler();
-@exc extern(C) void COMP4_6_IRQHandler();
+@exc extern(C) void ADC4_IRQHandler();
+@exc extern(C) void COMP1_2_3_IRQHandler();
+@exc extern(C) void COMP4_5_6_IRQHandler();
+@exc extern(C) void COMP7_IRQHandler();
 @exc extern(C) void I2C3_EV_IRQHandler();
 @exc extern(C) void I2C3_ER_IRQHandler();
 @exc extern(C) void USB_HP_IRQHandler();
@@ -137,11 +145,11 @@ alias extern(C) const void *VectorFunc;				// so I'm using a void* instead.
 	&TAMP_STAMP_IRQHandler,															/*   2 $0048 Tamper and TimeStamps through the EXTI line */
 	&RTC_WKUP_IRQHandler,															/*   3 $004c RTC Wakeup through the EXTI line */
 	&FLASH_IRQHandler,																/*   4 $0050 FLASH */
-	&RCC_IRQHandler,																/*   5 $0054 RCC */
-	&EXTI0_IRQHandler,																/*   6 $0058 EXTI Line0 */
-	&EXTI1_IRQHandler,																/*   7 $005c EXTI Line1 */
-	&EXTI2_TSC_IRQHandler,															/*   8 $0060 EXTI Line2 */
-	&EXTI3_IRQHandler,																/*   9 $0064 EXTI Line3 */
+	&RCC_IRQHandler,																/*   5 $0054 Reset and Clock Configuration */
+	&EXTI0_IRQHandler,																/*   6 $0058 External Interrupt Line 0 */
+	&EXTI1_IRQHandler,																/*   7 $005c External Interrupt Line 1 */
+	&EXTI2_TSC_IRQHandler,															/*   8 $0060 External Interrupt Line 2 and Touch Sensing Controller */
+	&EXTI3_IRQHandler,																/*   9 $0064 External Interrupt Line 3 */
 	&EXTI4_IRQHandler,																/*  10 $0068 EXTI Line4 */
 	&DMA1_Channel1_IRQHandler,														/*  11 $006c DMA1 Channel 1 */
 	&DMA1_Channel2_IRQHandler,														/*  12 $0070 DMA1 Channel 2 */
@@ -172,14 +180,14 @@ alias extern(C) const void *VectorFunc;				// so I'm using a void* instead.
 	&USART1_IRQHandler,																/*  37 $00d4 USART1 */
 	&USART2_IRQHandler,																/*  38 $00d8 USART2 */
 	&USART3_IRQHandler,																/*  39 $00dc USART3 */
-	&EXTI15_10_IRQHandler,															/*  40 $00e0 External Line[15:10]s */
+	&EXTI15_10_IRQHandler,															/*  40 $00e0 External Interrupt Lines[15:10] */
 	&RTC_Alarm_IRQHandler,															/*  41 $00e4 RTC Alarm (A and B) through EXTI Line */
 	&USBWakeUp_IRQHandler,															/*  42 $00e8 USB Wake Up */
-	cast(VectorFunc)0,																/*  43 $00ec Reserved */
-	cast(VectorFunc)0,																/*  44 $00f0 Reserved */
-	cast(VectorFunc)0,																/*  45 $00f4 Reserved */
-	cast(VectorFunc)0,																/*  46 $00f8 Reserved */
-	cast(VectorFunc)0,																/*  47 $00fc Reserved */
+	&TIM8_BRK_IRQHandler,															/*  43 $00ec TIM8 Break */
+	&TIM8_UP_IRQHandler,															/*  44 $00f0 TIM8 Update */
+	&TIM8_TRG_COM_IRQHandler,														/*  45 $00f4 TIM8 Trigger and Commutation */
+	&TIM8_CC_IRQHandler,															/*  46 $00f8 TIM8 Capture Compare */
+	&ADC3_IRQHandler,																/*  47 $00fc ADC3 */
 	&FMC_IRQHandler,																/*  48 $0100 Flexible Memory Controller */
 	cast(VectorFunc)0,																/*  49 $0104 Reserved */
 	cast(VectorFunc)0,																/*  50 $0108 Reserved */
@@ -187,18 +195,18 @@ alias extern(C) const void *VectorFunc;				// so I'm using a void* instead.
 	&UART4_IRQHandler,																/*  52 $0110 UART4 */
 	&UART5_IRQHandler,																/*  53 $0114 UART5 */
 	&TIM6_DAC_IRQHandler,															/*  54 $0118 TIM6 and DAC */
-	cast(VectorFunc)0,																/*  55 $011c Reserved */
+	&TIM7_IRQHandler,																/*  55 $011c TIM7 */
 	&DMA2_Channel1_IRQHandler,														/*  56 $0120 DMA2 Channel 1 */
 	&DMA2_Channel2_IRQHandler,														/*  57 $0124 DMA2 Channel 2 */
 	&DMA2_Channel3_IRQHandler,														/*  58 $0128 DMA2 Channel 3 */
 	&DMA2_Channel4_IRQHandler,														/*  59 $012c DMA2 Channel 4 */
 	&DMA2_Channel5_IRQHandler,														/*  60 $0130 DMA2 Channel 5 */
-	cast(VectorFunc)0,																/*  61 $0134 Reserved */
+	&ADC4_IRQHandler,																/*  61 $0134 ADC4 */
 	cast(VectorFunc)0,																/*  62 $0138 Reserved */
 	cast(VectorFunc)0,																/*  63 $013c Reserved */
-	&COMP1_2_IRQHandler,															/*  64 $0140 Comparator1 and Comparator2 */
-	&COMP4_6_IRQHandler,															/*  65 $0144 Comparator4 and Comparator6 */
-	cast(VectorFunc)0,																/*  66 $0148 Reserved */
+	&COMP1_2_3_IRQHandler,															/*  64 $0140 Comparator1, Comparator2 and Comparator3 */
+	&COMP4_5_6_IRQHandler,															/*  65 $0144 Comparator4, Comparator5 and Comparator6 */
+	&COMP7_IRQHandler,																/*  66 $0148 Comparator7 */
 	cast(VectorFunc)0,																/*  67 $014c Reserved */
 	cast(VectorFunc)0,																/*  68 $0150 Reserved */
 	cast(VectorFunc)0,																/*  69 $0154 Reserved */
@@ -211,13 +219,12 @@ alias extern(C) const void *VectorFunc;				// so I'm using a void* instead.
 	&USBWakeUp_RMP_IRQHandler,														/*  76 $0170 USB Wake Up and RMP */
 	&TIM20_BRK_IRQHandler,															/*  77 $0174 TIM20 Break */
 	&TIM20_UP_IRQHandler,															/*  78 $0178 TIM20 Update */
-	&TIM20_TRG_COM_IRQHandler,														/*  79 $017c TIM20 Trigger */
+	&TIM20_TRG_COM_IRQHandler,														/*  79 $017c TIM20 Trigger and Commutation */
 	&TIM20_CC_IRQHandler,															/*  80 $0180 TIM20 Capture Compare */
 	&FPU_IRQHandler,																/*  81 $0184 FPU */
 	cast(VectorFunc)0,																/*  82 $0188 Reserved */
 	cast(VectorFunc)0,																/*  83 $018c Reserved */
 	&SPI4_IRQHandler,																/*  84 $0190 SPI4 */
-
 	];
 
 @weak extern(C) void LowLevelInit();

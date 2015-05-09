@@ -132,11 +132,11 @@ alias extern(C) const void *VectorFunc;				// so I'm using a void* instead.
 	&TAMP_STAMP_IRQHandler,															/*   2 $0048 Tamper and TimeStamps through the EXTI line */
 	&RTC_WKUP_IRQHandler,															/*   3 $004c RTC Wakeup through the EXTI line */
 	&FLASH_IRQHandler,																/*   4 $0050 FLASH */
-	&RCC_IRQHandler,																/*   5 $0054 RCC */
-	&EXTI0_IRQHandler,																/*   6 $0058 EXTI Line0 */
-	&EXTI1_IRQHandler,																/*   7 $005c EXTI Line1 */
-	&EXTI2_TSC_IRQHandler,															/*   8 $0060 EXTI Line2 */
-	&EXTI3_IRQHandler,																/*   9 $0064 EXTI Line3 */
+	&RCC_IRQHandler,																/*   5 $0054 Reset and Clock Configuration */
+	&EXTI0_IRQHandler,																/*   6 $0058 External Interrupt Line 0 */
+	&EXTI1_IRQHandler,																/*   7 $005c External Interrupt Line 1 */
+	&EXTI2_TSC_IRQHandler,															/*   8 $0060 External Interrupt Line 2 and Touch Sensing Controller */
+	&EXTI3_IRQHandler,																/*   9 $0064 External Interrupt Line 3 */
 	&EXTI4_IRQHandler,																/*  10 $0068 EXTI Line4 */
 	&DMA1_Channel1_IRQHandler,														/*  11 $006c DMA1 Channel 1 */
 	&DMA1_Channel2_IRQHandler,														/*  12 $0070 DMA1 Channel 2 */
@@ -153,7 +153,7 @@ alias extern(C) const void *VectorFunc;				// so I'm using a void* instead.
 	&EXTI9_5_IRQHandler,															/*  23 $009c External Line[9:5]s */
 	&TIM1_BRK_TIM15_IRQHandler,														/*  24 $00a0 TIM1 Break and TIM15 */
 	&TIM1_UP_TIM16_IRQHandler,														/*  25 $00a4 TIM1 Update and TIM16 */
-	&TIM1_TRG_COM_TIM17_IRQHandler,													/*  26 $00a8 TIM1 Trigger and TIM17 */
+	&TIM1_TRG_COM_TIM17_IRQHandler,													/*  26 $00a8 TIM1 Trigger and Commutation and TIM17 */
 	&TIM1_CC_IRQHandler,															/*  27 $00ac TIM1 Capture Compare */
 	&TIM2_IRQHandler,																/*  28 $00b0 TIM2 */
 	&TIM3_IRQHandler,																/*  29 $00b4 TIM3 */
@@ -167,12 +167,12 @@ alias extern(C) const void *VectorFunc;				// so I'm using a void* instead.
 	&USART1_IRQHandler,																/*  37 $00d4 USART1 */
 	&USART2_IRQHandler,																/*  38 $00d8 USART2 */
 	&USART3_IRQHandler,																/*  39 $00dc USART3 */
-	&EXTI15_10_IRQHandler,															/*  40 $00e0 External Line[15:10]s */
+	&EXTI15_10_IRQHandler,															/*  40 $00e0 External Interrupt Lines[15:10] */
 	&RTC_Alarm_IRQHandler,															/*  41 $00e4 RTC Alarm (A and B) through EXTI Line */
 	cast(VectorFunc)0,																/*  42 $00e8 Reserved */
 	&TIM8_BRK_IRQHandler,															/*  43 $00ec TIM8 Break */
 	&TIM8_UP_IRQHandler,															/*  44 $00f0 TIM8 Update */
-	&TIM8_TRG_COM_IRQHandler,														/*  45 $00f4 TIM8 Trigger */
+	&TIM8_TRG_COM_IRQHandler,														/*  45 $00f4 TIM8 Trigger and Commutation */
 	&TIM8_CC_IRQHandler,															/*  46 $00f8 TIM8 Capture Compare */
 	&ADC3_IRQHandler,																/*  47 $00fc ADC3 */
 	cast(VectorFunc)0,																/*  48 $0100 Reserved */

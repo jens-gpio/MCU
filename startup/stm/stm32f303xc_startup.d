@@ -96,6 +96,8 @@ alias extern(C) const void *VectorFunc;				// so I'm using a void* instead.
 @exc extern(C) void TIM8_CC_IRQHandler();
 @exc extern(C) void ADC3_IRQHandler();
 @exc extern(C) void SPI3_IRQHandler();
+@exc extern(C) void UART4_IRQHandler();
+@exc extern(C) void UART5_IRQHandler();
 @exc extern(C) void TIM6_DAC_IRQHandler();
 @exc extern(C) void TIM7_IRQHandler();
 @exc extern(C) void DMA2_Channel1_IRQHandler();
@@ -110,7 +112,6 @@ alias extern(C) const void *VectorFunc;				// so I'm using a void* instead.
 @exc extern(C) void USB_HP_IRQHandler();
 @exc extern(C) void USB_LP_IRQHandler();
 @exc extern(C) void USBWakeUp_RMP_IRQHandler();
-@exc extern(C) void TIM19_IRQHandler();
 @exc extern(C) void FPU_IRQHandler();
 
 @isr_vector VectorFunc[98] g_pfnVectors = [
@@ -136,11 +137,11 @@ alias extern(C) const void *VectorFunc;				// so I'm using a void* instead.
 	&TAMP_STAMP_IRQHandler,															/*   2 $0048 Tamper and TimeStamps through the EXTI line */
 	&RTC_WKUP_IRQHandler,															/*   3 $004c RTC Wakeup through the EXTI line */
 	&FLASH_IRQHandler,																/*   4 $0050 FLASH */
-	&RCC_IRQHandler,																/*   5 $0054 RCC */
-	&EXTI0_IRQHandler,																/*   6 $0058 EXTI Line0 */
-	&EXTI1_IRQHandler,																/*   7 $005c EXTI Line1 */
-	&EXTI2_TSC_IRQHandler,															/*   8 $0060 EXTI Line2 */
-	&EXTI3_IRQHandler,																/*   9 $0064 EXTI Line3 */
+	&RCC_IRQHandler,																/*   5 $0054 Reset and Clock Configuration */
+	&EXTI0_IRQHandler,																/*   6 $0058 External Interrupt Line 0 */
+	&EXTI1_IRQHandler,																/*   7 $005c External Interrupt Line 1 */
+	&EXTI2_TSC_IRQHandler,															/*   8 $0060 External Interrupt Line 2 and Touch Sensing Controller */
+	&EXTI3_IRQHandler,																/*   9 $0064 External Interrupt Line 3 */
 	&EXTI4_IRQHandler,																/*  10 $0068 EXTI Line4 */
 	&DMA1_Channel1_IRQHandler,														/*  11 $006c DMA1 Channel 1 */
 	&DMA1_Channel2_IRQHandler,														/*  12 $0070 DMA1 Channel 2 */
@@ -171,7 +172,7 @@ alias extern(C) const void *VectorFunc;				// so I'm using a void* instead.
 	&USART1_IRQHandler,																/*  37 $00d4 USART1 */
 	&USART2_IRQHandler,																/*  38 $00d8 USART2 */
 	&USART3_IRQHandler,																/*  39 $00dc USART3 */
-	&EXTI15_10_IRQHandler,															/*  40 $00e0 External Line[15:10]s */
+	&EXTI15_10_IRQHandler,															/*  40 $00e0 External Interrupt Lines[15:10] */
 	&RTC_Alarm_IRQHandler,															/*  41 $00e4 RTC Alarm (A and B) through EXTI Line */
 	&USBWakeUp_IRQHandler,															/*  42 $00e8 USB Wake Up */
 	&TIM8_BRK_IRQHandler,															/*  43 $00ec TIM8 Break */
@@ -183,8 +184,8 @@ alias extern(C) const void *VectorFunc;				// so I'm using a void* instead.
 	cast(VectorFunc)0,																/*  49 $0104 Reserved */
 	cast(VectorFunc)0,																/*  50 $0108 Reserved */
 	&SPI3_IRQHandler,																/*  51 $010c SPI3 */
-	cast(VectorFunc)0,																/*  52 $0110 Reserved */
-	cast(VectorFunc)0,																/*  53 $0114 Reserved */
+	&UART4_IRQHandler,																/*  52 $0110 UART4 */
+	&UART5_IRQHandler,																/*  53 $0114 UART5 */
 	&TIM6_DAC_IRQHandler,															/*  54 $0118 TIM6 and DAC */
 	&TIM7_IRQHandler,																/*  55 $011c TIM7 */
 	&DMA2_Channel1_IRQHandler,														/*  56 $0120 DMA2 Channel 1 */
@@ -209,7 +210,7 @@ alias extern(C) const void *VectorFunc;				// so I'm using a void* instead.
 	&USB_LP_IRQHandler,																/*  75 $016c USB Low Priority */
 	&USBWakeUp_RMP_IRQHandler,														/*  76 $0170 USB Wake Up and RMP */
 	cast(VectorFunc)0,																/*  77 $0174 Reserved */
-	&TIM19_IRQHandler,																/*  78 $0178 TIM19 */
+	cast(VectorFunc)0,																/*  78 $0178 Reserved */
 	cast(VectorFunc)0,																/*  79 $017c Reserved */
 	cast(VectorFunc)0,																/*  80 $0180 Reserved */
 	&FPU_IRQHandler,																/*  81 $0184 FPU */

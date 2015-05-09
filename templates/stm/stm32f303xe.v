@@ -19,11 +19,11 @@
 	TAMP_STAMP_IRQHandler,			/* Tamper and TimeStamps through the EXTI line */
 	RTC_WKUP_IRQHandler,			/* RTC Wakeup through the EXTI line */
 	FLASH_IRQHandler,				/* FLASH */
-	RCC_IRQHandler,					/* RCC */
-	EXTI0_IRQHandler,				/* EXTI Line0 */
-	EXTI1_IRQHandler,				/* EXTI Line1 */
-	EXTI2_TSC_IRQHandler,			/* EXTI Line2 */
-	EXTI3_IRQHandler,				/* EXTI Line3 */
+	RCC_IRQHandler,					/* Reset and Clock Configuration */
+	EXTI0_IRQHandler,				/* External Interrupt Line 0 */
+	EXTI1_IRQHandler,				/* External Interrupt Line 1 */
+	EXTI2_TSC_IRQHandler,			/* External Interrupt Line 2 and Touch Sensing Controller */
+	EXTI3_IRQHandler,				/* External Interrupt Line 3 */
 	EXTI4_IRQHandler,				/* EXTI Line4 */
 	DMA1_Channel1_IRQHandler,		/* DMA1 Channel 1 */
 	DMA1_Channel2_IRQHandler,		/* DMA1 Channel 2 */
@@ -54,14 +54,14 @@
 	USART1_IRQHandler,				/* USART1 */
 	USART2_IRQHandler,				/* USART2 */
 	USART3_IRQHandler,				/* USART3 */
-	EXTI15_10_IRQHandler,			/* External Line[15:10]s */
+	EXTI15_10_IRQHandler,			/* External Interrupt Lines[15:10] */
 	RTC_Alarm_IRQHandler,			/* RTC Alarm (A and B) through EXTI Line */
 	USBWakeUp_IRQHandler,			/* USB Wake Up */
-	,								/* Reserved */
-	,								/* Reserved */
-	,								/* Reserved */
-	,								/* Reserved */
-	,								/* Reserved */
+	TIM8_BRK_IRQHandler,			/* TIM8 Break */
+	TIM8_UP_IRQHandler,				/* TIM8 Update */
+	TIM8_TRG_COM_IRQHandler,		/* TIM8 Trigger and Commutation */
+	TIM8_CC_IRQHandler,				/* TIM8 Capture Compare */
+	ADC3_IRQHandler,				/* ADC3 */
 	FMC_IRQHandler,					/* Flexible Memory Controller */
 	,								/* Reserved */
 	,								/* Reserved */
@@ -69,18 +69,18 @@
 	UART4_IRQHandler,				/* UART4 */
 	UART5_IRQHandler,				/* UART5 */
 	TIM6_DAC_IRQHandler,			/* TIM6 and DAC */
-	,								/* Reserved */
+	TIM7_IRQHandler,				/* TIM7 */
 	DMA2_Channel1_IRQHandler,		/* DMA2 Channel 1 */
 	DMA2_Channel2_IRQHandler,		/* DMA2 Channel 2 */
 	DMA2_Channel3_IRQHandler,		/* DMA2 Channel 3 */
 	DMA2_Channel4_IRQHandler,		/* DMA2 Channel 4 */
 	DMA2_Channel5_IRQHandler,		/* DMA2 Channel 5 */
+	ADC4_IRQHandler,				/* ADC4 */
 	,								/* Reserved */
 	,								/* Reserved */
-	,								/* Reserved */
-	COMP1_2_IRQHandler,				/* Comparator1 and Comparator2 */
-	COMP4_6_IRQHandler,				/* Comparator4 and Comparator6 */
-	,								/* Reserved */
+	COMP1_2_3_IRQHandler,			/* Comparator1, Comparator2 and Comparator3 */
+	COMP4_5_6_IRQHandler,			/* Comparator4, Comparator5 and Comparator6 */
+	COMP7_IRQHandler,				/* Comparator7 */
 	,								/* Reserved */
 	,								/* Reserved */
 	,								/* Reserved */
@@ -93,10 +93,9 @@
 	USBWakeUp_RMP_IRQHandler,		/* USB Wake Up and RMP */
 	TIM20_BRK_IRQHandler,			/* TIM20 Break */
 	TIM20_UP_IRQHandler,			/* TIM20 Update */
-	TIM20_TRG_COM_IRQHandler,		/* TIM20 Trigger */
+	TIM20_TRG_COM_IRQHandler,		/* TIM20 Trigger and Commutation */
 	TIM20_CC_IRQHandler,			/* TIM20 Capture Compare */
 	FPU_IRQHandler,					/* FPU */
 	,								/* Reserved */
 	,								/* Reserved */
 	SPI4_IRQHandler,				/* SPI4 */
-	

@@ -101,7 +101,7 @@ BootRAM = 0xF1E0F85F;
 @exc extern(C) void DMA2_Channel3_IRQHandler();
 @exc extern(C) void DMA2_Channel4_5_IRQHandler();
 
-@isr_vector VectorFunc[129] g_pfnVectors = [
+@isr_vector VectorFunc[121] g_pfnVectors = [
 	cast(VectorFunc)&_stack,														/* -16 $0000 Initial Stack Pointer */
 	&Reset_Handler,																	/* -15 $0004 Reset Vector */
 	&NMI_Handler,																	/* -14 $0008 Non Maskable Interrupt Vector */
@@ -122,13 +122,13 @@ BootRAM = 0xF1E0F85F;
 	&WWDG_IRQHandler,																/*   0 $0040 Windowed WatchDog */
 	&PVD_IRQHandler,																/*   1 $0044 PVD through EXTI Line detection */
 	&TAMPER_IRQHandler,																/*   2 $0048 Tamper */
-	&RTC_IRQHandler,																/*   3 $004c RTC */
+	&RTC_IRQHandler,																/*   3 $004c Real Time Clock */
 	&FLASH_IRQHandler,																/*   4 $0050 FLASH */
-	&RCC_IRQHandler,																/*   5 $0054 RCC */
-	&EXTI0_IRQHandler,																/*   6 $0058 EXTI Line0 */
-	&EXTI1_IRQHandler,																/*   7 $005c EXTI Line1 */
-	&EXTI2_IRQHandler,																/*   8 $0060 EXTI Line2 */
-	&EXTI3_IRQHandler,																/*   9 $0064 EXTI Line3 */
+	&RCC_IRQHandler,																/*   5 $0054 Reset and Clock Configuration */
+	&EXTI0_IRQHandler,																/*   6 $0058 External Interrupt Line 0 */
+	&EXTI1_IRQHandler,																/*   7 $005c External Interrupt Line 1 */
+	&EXTI2_IRQHandler,																/*   8 $0060 External Interrupt Line 2 */
+	&EXTI3_IRQHandler,																/*   9 $0064 External Interrupt Line 3 */
 	&EXTI4_IRQHandler,																/*  10 $0068 EXTI Line4 */
 	&DMA1_Channel1_IRQHandler,														/*  11 $006c DMA1 Channel 1 */
 	&DMA1_Channel2_IRQHandler,														/*  12 $0070 DMA1 Channel 2 */
@@ -159,7 +159,7 @@ BootRAM = 0xF1E0F85F;
 	&USART1_IRQHandler,																/*  37 $00d4 USART1 */
 	&USART2_IRQHandler,																/*  38 $00d8 USART2 */
 	&USART3_IRQHandler,																/*  39 $00dc USART3 */
-	&EXTI15_10_IRQHandler,															/*  40 $00e0 External Line[15:10]s */
+	&EXTI15_10_IRQHandler,															/*  40 $00e0 External Interrupt Lines[15:10] */
 	&RTC_Alarm_IRQHandler,															/*  41 $00e4 RTC Alarm (A and B) through EXTI Line */
 	cast(VectorFunc)0,																/*  42 $00e8 Reserved */
 	&TIM12_IRQHandler,																/*  43 $00ec TIM12 */
@@ -223,15 +223,7 @@ BootRAM = 0xF1E0F85F;
 	cast(VectorFunc)0,																/* 101 $01d4 Reserved */
 	cast(VectorFunc)0,																/* 102 $01d8 Reserved */
 	cast(VectorFunc)0,																/* 103 $01dc Reserved */
-	cast(VectorFunc)0,																/* 104 $01e0 Reserved */
-	cast(VectorFunc)0,																/* 105 $01e4 Reserved */
-	cast(VectorFunc)0,																/* 106 $01e8 Reserved */
-	cast(VectorFunc)0,																/* 107 $01ec Reserved */
-	cast(VectorFunc)0,																/* 108 $01f0 Reserved */
-	cast(VectorFunc)0,																/* 109 $01f4 Reserved */
-	cast(VectorFunc)0,																/* 110 $01f8 Reserved */
-	cast(VectorFunc)0,																/* 111 $01fc Reserved */
-	cast(VectorFunc)BootRAM,														/* 112 $0200  */
+	cast(VectorFunc)BootRAM,														/* 104 $01e0  */
 	];
 
 @weak extern(C) void LowLevelInit();

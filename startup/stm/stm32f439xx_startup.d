@@ -246,7 +246,7 @@ alias extern(C) const void *VectorFunc;				// so I'm using a void* instead.
 	&SPI6_IRQHandler,																/*  86 $0198 SPI6 */
 	&SAI1_IRQHandler,																/*  87 $019c SAI1 */
 	&LTDC_IRQHandler,																/*  88 $01a0 LTDC */
-	&LTDC_ER_IRQHandler,															/*  89 $01a4 LTDC Error */
+	&LTDC_ER_IRQHandler,															/*  89 $01a4 LTDC error */
 	&DMA2D_IRQHandler,																/*  90 $01a8 DMA2D */
 	];
 

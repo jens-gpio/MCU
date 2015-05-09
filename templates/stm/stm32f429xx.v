@@ -102,6 +102,6 @@
 	SPI5_IRQHandler,				/* SPI5 */
 	SPI6_IRQHandler,				/* SPI6 */
 	SAI1_IRQHandler,				/* SAI1 */
-	LTDC_IRQHandler,				/* LTDC */
-	LTDC_ER_IRQHandler,				/* LTDC Error */
+	LTDC_IRQHandler,				/* LTDC_IRQHandler */
+	LTDC_ER_IRQHandler,				/* LTDC_ER_IRQHandler */
 	DMA2D_IRQHandler,				/* DMA2D */
